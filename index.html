@@ -59,6 +59,25 @@ body:has(a:hover) #cursor-dot,body:has(button:hover) #cursor-dot{width:20px;heig
 /* ── PARTICLE CANVAS ── */
 #particle-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55}
 
+/* ── FILM GRAIN OVERLAY ── */
+#grain-overlay{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  opacity:0.045;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+  animation:grainShift 0.6s steps(4) infinite;
+}
+@keyframes grainShift{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(-2%,2%)}
+  50%{transform:translate(2%,-1%)}
+  75%{transform:translate(-1%,-2%)}
+  100%{transform:translate(0,0)}
+}
+@media(prefers-reduced-motion:reduce){
+  #grain-overlay{animation:none}
+}
+
 /* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
@@ -242,12 +261,12 @@ h2.sec-title{font-family:var(--display);font-size:clamp(2.6rem,5vw,4rem);line-he
   scrollbar-width:thin;
 }
 .reel-scroll::-webkit-scrollbar{height:5px}
-.reel-card{flex:0 0 220px;position:relative}
+.reel-card{flex:0 0 200px;position:relative}
 .reel-frame{
   position:relative;width:100%;padding-top:177.78%;
   border-radius:14px;overflow:hidden;
   border:1px solid rgba(255,255,255,0.08);
-  background:var(--card);
+  background:#000;
   transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s;
 }
 .reel-frame:hover{
@@ -255,11 +274,11 @@ h2.sec-title{font-family:var(--display);font-size:clamp(2.6rem,5vw,4rem);line-he
   box-shadow:0 16px 44px rgba(90,79,176,0.2);
   transform:translateY(-5px);
 }
-.reel-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.reel-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
 
 /* ── LINKS ── */
 #links{background:var(--bg)}
-.links-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.5rem}
+.links-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2.5rem}
 .link-card{
   background:var(--card2);border:1px solid rgba(255,255,255,0.05);
   padding:1.8rem 1.5rem;text-decoration:none;
@@ -378,6 +397,10 @@ footer{
   .filmstrip{flex-wrap:wrap}
   .fs-stat{border-left:none;border-top:1px solid rgba(156,143,224,0.08)}
 }
+@media(hover:none),(pointer:coarse){
+  #cursor-glow,#cursor-dot{display:none !important}
+  body,.btn,.reel-cat,.tilt-card,.proj-card,.reel-frame,a,button{cursor:auto !important}
+}
 @media(prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
 }
@@ -391,6 +414,9 @@ footer{
 
 <!-- PARTICLES -->
 <canvas id="particle-canvas"></canvas>
+
+<!-- FILM GRAIN -->
+<div id="grain-overlay"></div>
 
 <!-- AMBIENT ORBS -->
 <div class="orb orb-1"></div>
@@ -417,7 +443,7 @@ footer{
   <p class="eyebrow reveal">Video Editor · Videographer · Motion Designer — Kannur, Kerala</p>
   <h1 class="hero-gradient-text reveal">ALVIN</h1>
   <p class="hero-sub reveal">
-    <strong>23-year-old visual storyteller</strong> with 2 years of professional experience at Creatox Design Agency.<br>
+    <strong>23-year-old visual storyteller</strong> with 2 years of professional experience, working remotely.<br>
     Seamless edits. Dynamic motion. Cinematic visuals that make people stop scrolling.
   </p>
   <div class="hero-btns reveal">
@@ -442,7 +468,7 @@ footer{
     <p class="sec-label">About Me</p>
     <h2 class="sec-title">THE EDITOR<br>BEHIND<br>THE FRAME</h2>
     <div class="about-bio">
-      <p>Hi, I'm <strong>Alvin</strong> — a 23-year-old video editor and videographer from <strong>Kannur, Kerala, India</strong>. Over 2 years at <strong>Creatox Design Agency</strong>, I've worked on branded reels, talking-head content, fashion films, motion graphics, and on-location videography.</p>
+      <p>Hi, I'm <strong>Alvin</strong> — a 23-year-old video editor and videographer from <strong>Kannur, Kerala, India</strong>, now working remotely. Over 2 years of experience, I've worked on branded reels, talking-head content, fashion films, motion graphics, and on-location videography.</p>
       <p>Every project gets the same obsession: <strong>the right cut at the right moment</strong>. I believe editing isn't trimming footage — it's shaping emotion and making the viewer feel something.</p>
     </div>
     <div class="skills-list">
@@ -460,7 +486,7 @@ footer{
       <div class="info-item"><div class="info-lbl">Location</div><div class="info-val">Kannur, Kerala, India</div></div>
       <div class="info-item"><div class="info-lbl">Role</div><div class="info-val">Video Editor & Videographer</div></div>
       <div class="info-item"><div class="info-lbl">Experience</div><div class="info-val">2 Years Professional</div></div>
-      <div class="info-item"><div class="info-lbl">Company</div><div class="info-val">Creatox Design Agency</div></div>
+      <div class="info-item"><div class="info-lbl">Work Mode</div><div class="info-val">Remote</div></div>
     </div>
     <!-- 3D glass tool cards -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
@@ -601,6 +627,7 @@ footer{
   <p class="sec-label reveal">Find Me Online</p>
   <h2 class="sec-title reveal">MY LINKS</h2>
   <div class="links-grid">
+    <a href="https://www.linkedin.com/in/alvin-k-185a55286" target="_blank" rel="noopener" class="link-card tilt-card reveal"><div class="link-icon">💼</div><div class="link-name">LinkedIn</div><div class="link-url">linkedin.com/in/alvin-k</div><div class="link-arrow">↗</div></a>
     <a href="https://www.behance.net/alvink3" target="_blank" rel="noopener" class="link-card tilt-card reveal"><div class="link-icon">🎨</div><div class="link-name">Behance</div><div class="link-url">behance.net/alvink3</div><div class="link-arrow">↗</div></a>
     <a href="https://alvin-fling.github.io/" target="_blank" rel="noopener" class="link-card tilt-card reveal"><div class="link-icon">🌐</div><div class="link-name">Website</div><div class="link-url">alvin-fling.github.io</div><div class="link-arrow">↗</div></a>
     <a href="https://drive.google.com/drive/folders/1RZTaXpkUJLLYbs_uWBWAbeYhkMqP-qGi" target="_blank" rel="noopener" class="link-card tilt-card reveal"><div class="link-icon">📁</div><div class="link-name">Google Drive</div><div class="link-url">Work samples & showreel</div><div class="link-arrow">↗</div></a>
@@ -618,7 +645,7 @@ footer{
     <div class="cinfo"><div class="cinfo-ico">📍</div><div><div class="cinfo-lbl">Location</div><div class="cinfo-val">Kannur, Kerala, India</div></div></div>
     <div class="cinfo"><div class="cinfo-ico">✉️</div><div><div class="cinfo-lbl">Email</div><div class="cinfo-val"><a href="mailto:alvinkalvi@gmail.com">alvinkalvi@gmail.com</a></div></div></div>
     <div class="cinfo"><div class="cinfo-ico">📞</div><div><div class="cinfo-lbl">Phone</div><div class="cinfo-val"><a href="tel:+918139864114">+91 8139864114</a></div></div></div>
-    <div class="cinfo"><div class="cinfo-ico">💼</div><div><div class="cinfo-lbl">Current Company</div><div class="cinfo-val">Creatox Design Agency</div></div></div>
+    <div class="cinfo"><div class="cinfo-ico">💼</div><div><div class="cinfo-lbl">Work Mode</div><div class="cinfo-val">Remote — Open Worldwide</div></div></div>
     <div class="cinfo"><div class="cinfo-ico">🔗</div><div><div class="cinfo-lbl">Behance</div><div class="cinfo-val"><a href="https://www.behance.net/alvink3" target="_blank">behance.net/alvink3</a></div></div></div>
     <div class="cinfo"><div class="cinfo-ico">🌐</div><div><div class="cinfo-lbl">Website</div><div class="cinfo-val"><a href="https://alvin-fling.github.io/" target="_blank">alvin-fling.github.io</a></div></div></div>
     <div class="cinfo"><div class="cinfo-ico">📄</div><div><div class="cinfo-lbl">CV</div><div class="cinfo-val"><a href="https://new.express.adobe.com/publishedV2/urn:aaid:sc:AP:d1ac539a-0f2e-471a-bd03-8a60885638c1?promoid=Y69SGM5H&mv=other" target="_blank">View Resume →</a></div></div></div>
@@ -713,20 +740,26 @@ drawParticles();
 // resize canvas height again after full load (images/iframes may change page height)
 window.addEventListener('load',()=>setTimeout(resizeCanvas,500));
 
-// ── CURSOR ──
-const glow = document.getElementById('cursor-glow');
-const dot  = document.getElementById('cursor-dot');
-let mx=0,my=0,gx=0,gy=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  dot.style.left=mx+'px'; dot.style.top=my+'px';
-});
-function animateCursor(){
-  gx+=(mx-gx)*0.08; gy+=(my-gy)*0.08;
-  glow.style.left=gx+'px'; glow.style.top=gy+'px';
-  requestAnimationFrame(animateCursor);
+// ── CURSOR (desktop/hover devices only) ──
+const isTouchDevice=window.matchMedia('(hover: none), (pointer: coarse)').matches;
+if(!isTouchDevice){
+  const glow = document.getElementById('cursor-glow');
+  const dot  = document.getElementById('cursor-dot');
+  let mx=0,my=0,gx=0,gy=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+  });
+  function animateCursor(){
+    gx+=(mx-gx)*0.08; gy+=(my-gy)*0.08;
+    glow.style.left=gx+'px'; glow.style.top=gy+'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+}else{
+  document.getElementById('cursor-glow').remove();
+  document.getElementById('cursor-dot').remove();
 }
-animateCursor();
 
 // ── SCROLL REVEAL ──
 const revEls=document.querySelectorAll('.reveal');
